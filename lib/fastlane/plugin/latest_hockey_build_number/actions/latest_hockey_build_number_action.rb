@@ -13,10 +13,10 @@ module Fastlane
         list_response = http.request(list_request)
         app_list = JSON.parse(list_response.body)['apps']
 
-        app_index = app_list.find_index { |app| app['platform'] == 'iOS' &&  app['bundle_identifier'] == config[:bundle_id] }
+        app_index = app_list.find_index { |app| app['platform'] == 'iOS' &&  app['public_identifier'] == config[:public_identifier] }
 
         if app_index.nil? then
-            UI.error "No application with bundle id #{config[:bundle_id]}"
+            UI.error "No application with bundle id #{config[:public_identifier]}"
             return nil
         end
 
@@ -53,7 +53,7 @@ module Fastlane
                                        verify_block: proc do |value|
                                          UI.user_error!("No API token for Hockey given, pass using `api_token: 'token'`") unless value and !value.empty?
                                        end),
-          FastlaneCore::ConfigItem.new(key: :bundle_id,
+          FastlaneCore::ConfigItem.new(key: :public_identifier,
                                        env_name: "FL_HOCKEY_BUNDLE_ID",
                                        description: "Bundle ID of the application",
                                        verify_block: proc do |value|
