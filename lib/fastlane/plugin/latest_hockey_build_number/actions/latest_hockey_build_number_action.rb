@@ -13,10 +13,10 @@ module Fastlane
         list_response = http.request(list_request)
         app_list = JSON.parse(list_response.body)['apps']
 
-        app_index = app_list.find_index { |app| app['platform'] == 'iOS' &&  app['public_identifier'] == config[:public_identifier] }
+        app_index = app_list.find_index { |app| app['public_identifier'] == config[:public_identifier] }
 
         if app_index.nil? then
-            UI.error "No application with bundle id #{config[:public_identifier]}"
+            UI.error "No application with public identifier #{config[:public_identifier]}"
             return nil
         end
 
@@ -63,7 +63,8 @@ module Fastlane
       end
 
       def self.is_supported?(platform)
-        [:ios].include? platform
+        #[:ios].include? platform
+				true
       end
     end
   end
